@@ -15,7 +15,7 @@ $dbname = 'osk';
 $user = 'root';
 $password = 'ryugo1120';
 
-$dbh = new PDO('mysqql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8', $user, $password);
+$dbh = new PDO('mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8', $user, $password);
 
 define('PASSWORD_KEY', 'EO&(ZOM&'); // 暗号化キー（8桁のパスワード）
 
