@@ -57,6 +57,11 @@
             </div>
             <div class="col-xs-4"></div>
           </div>
+
+          <hr>
+
+          ※新規のユーザー登録に関しましては，所属上長へ申請していただくか，下記システム管理者へお問い合わせください。<br />
+          システム管理責任者：<a href="mailto:support@osk.jp">support@osk.jp</a>
         </form>
       </div>
     </div>
