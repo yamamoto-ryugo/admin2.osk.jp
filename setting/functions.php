@@ -17,3 +17,7 @@ function checkToken() {
     exit;
   }
 }
+
+function getSha1Password($s) {
+  return (sha1(PASSWORD_KEY . $s));
+}
