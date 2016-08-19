@@ -13,6 +13,11 @@
 
   $me = $_SESSION['me'];
 
+  if ($me['admin'] == 1) {
+    header('Location: ../../../');
+    exit;
+  }
+
   function user_idExists($user_id, $dbh) {
     $sql = "SELECT * FROM user WHERE user_id = :user_id LIMIT 1";
     $stmt = $dbh->prepare($sql);
