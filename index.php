@@ -13,12 +13,6 @@
 
   $me = $_SESSION['me'];
 
-  define('PER_PAGE', 5);
-
-  $page = 1;
-
-  $offset = PER_PAGE * ($page - 1);
-
 ?>
 
 <!DOCTYPE html>
@@ -51,13 +45,13 @@
               <div class="box-body">
                 <a class="btn btn-primary" style="width: 200px;" href="/page/user/add/">新規登録</a>
                 <a class="btn btn-primary" style="width: 200px;" href="/page/user/">一覧</a>
-
+                <hr>
                 <div class="row">
                   <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover">
                       <thead>
                         <tr>
-                          <th nowrap>ID</th>
+                          <th nowrap>NO</th>
                           <th nowrap>氏</th>
                           <th nowrap>名</th>
                           <th nowrap>ユーザーID</th>
@@ -71,7 +65,7 @@
                       </thead>
                       <?php
 
-                        $sql = "SELECT * FROM user LIMIT " . $offset . "," . PER_PAGE;
+                        $sql = "SELECT * FROM user ORDER BY id DESC LIMIT 5";
                         $users = array();
                         foreach ($dbh->query($sql) as $row) {
                           array_push($users, $row);
