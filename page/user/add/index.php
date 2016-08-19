@@ -6,6 +6,13 @@
 
   session_start();
 
+  if (empty($_SESSION['me'])) {
+    header('Location: ../../../page/login/');
+    exit;
+  }
+
+  $me = $_SESSION['me'];
+
   function user_idExists($user_id, $dbh) {
     $sql = "SELECT * FROM user WHERE user_id = :user_id LIMIT 1";
     $stmt = $dbh->prepare($sql);
