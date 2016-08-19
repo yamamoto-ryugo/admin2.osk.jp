@@ -61,7 +61,7 @@
       // 登録処理
 
       $sql = "INSERT INTO user
-             (name_1, name_2, user_id, password, adimn, party, created)
+             (name_1, name_2, user_id, password, admin, party, created)
              VALUES
              (:name_1, :name_2, :user_id, :password, :admin, :party, now())";
       $stmt = $dbh->prepare($sql);
