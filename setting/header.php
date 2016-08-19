@@ -13,8 +13,8 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <li>
-          <a href="">
-            <i class="fa fa-sign-out"></i>ログアウト
+          <a href="/page/logout/">
+            <i class="fa fa-sign-out"></i>ログアウト（<?php echo $me['name_1'] . " " . $me['name_2']; ?>）
           </a>
         </li>
       </ul>

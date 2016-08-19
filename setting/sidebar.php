@@ -3,7 +3,11 @@
     <ul class="sidebar-menu">
       <li class="header">機能一覧</li>
 
-      <li><a href="">ユーザー設定</a></li>
+      <?php if ($me['admin'] == 2) : ?>
+        <li><a href="">ユーザー設定</a></li>
+      <?php endif; ?>
+
+
       <li><a href="">プロフィール設定</a></li>
       <li><a href="">団体設定</a></li>
       <li><a href="">よくある質問設定</a></li>
