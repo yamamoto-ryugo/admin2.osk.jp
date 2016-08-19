@@ -5,9 +5,65 @@
 
   session_start();
 
+  function user_idExists($user_id, $dbh) {
+    $sql = "SELECT * FROM user WHERE user_id = :user_id LIMIT 1";
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute(array(":user_id" => $user_id));
+    $user = $stmt->fetch();
+    return $user ? true : false;
+  }
+
+  function getUser($user_id, $password, $dbh) {
+    $sql = "SELECT * FROM user WHERE user_id = :user_id AND password = :password LIMIT 1";
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute(array(":user_id"=>$user_id, ":password"=>getSha1Password($password)));
+    $user = $stmt->fetch();
+    return $user ? $user : false;
+  }
+
   if (!empty($_SESSION['me'])) {
     header('Location: ../../');
     exit;
+  }
+
+  if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+    // CSRF対策
+    setToken();
+  } else {
+    checkToken();
+
+    $user_id = $_POST['user_id'];
+    $password = $_POST['password'];
+
+    $err = array();
+
+    // ユーザーIDが登録されていない
+    if (!user_idExists($user_id, $dbh)) {
+      $err['user_id'] = 'ユーザーIDが不正です。';
+    }
+
+    // ユーザーIDが空
+    if ($user_id == '') {
+      $err['user_id'] = 'ユーザーIDを入力してください。';
+    }
+
+    // ユーザーIDとパスワードが正しくない。
+    if (!$me = getUser($user_id, $password, $dbh)) {
+      $err['password'] = '不正な処理が行われました。';
+    }
+
+    // パスワードが空
+    if ($password == '') {
+      $err['password'] = 'パスワードを入力してください。';
+    }
+
+    if (empty($err)) {
+      // セッションハイジャック対策
+      session_regenerate_id(true);
+      $_SESSION['me'] = $me;
+      header("Location: ../../");
+      exit;
+    }
   }
 
 ?>
@@ -39,9 +95,20 @@
       <div class="login-box-body">
         <p class="login-box-msg">ログインしてください。</p>
 
+        <!-- エラー表示 -->
+        <?php if (!empty($err['user_id'])) : ?>
+          <div class="alert alert-danger">
+            <strong>エラー！</strong><?php echo $err['user_id']; ?>
+          </div>
+        <?php elseif (!empty($err['password'])) : ?>
+          <div class="alert alert-danger">
+            <strong>エラー！</strong><?php echo $err['password']; ?>
+          </div>
+        <?php endif; ?>
+
         <form action="" method="post">
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="User ID" name="user_id" autofocus="On">
+            <input type="text" class="form-control" placeholder="User ID" name="user_id" autofocus="On" value="<?php echo h($user_id); ?>">
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
 
@@ -51,7 +118,9 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+              <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
+            </div>
             <div class="col-xs-4">
               <input type="submit" class="btn btn-primary btn-block btn-flat" value="ログイン">
             </div>
