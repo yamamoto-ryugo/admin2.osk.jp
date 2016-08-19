@@ -13,6 +13,12 @@
 
   $me = $_SESSION['me'];
 
+  define('PER_PAGE', 5);
+
+  $page = 1;
+
+  $offset = PER_PAGE * ($page - 1);
+
 ?>
 
 <!DOCTYPE html>
@@ -36,101 +42,102 @@
 
         <section class="content">
 
-          <!-- エラー表示 -->
-          <?php if(!empty($err['name'])) : ?>
-            <div class="alert alert-danger">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>エラー！</strong><?php echo $err['name']; ?>
-            </div>
-          <?php elseif (!empty($err['user_id'])) : ?>
-            <div class="alert alert-danger">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>エラー！</strong><?php echo $err['user_id']; ?>
-            </div>
-          <?php elseif (!empty($err['password'])) : ?>
-            <div class="alert alert-danger">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>エラー！</strong><?php echo $err['password']; ?>
-            </div>
-          <?php elseif (!empty($err['admin'])) : ?>
-            <div class="alert alert-danger">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>エラー！</strong><?php echo $err['admin']; ?>
+          <?php if ($me[admin] == 2) : ?>
+            <div class="box">
+              <div class="box-header with-border">
+                <h3 class="box-title">ユーザー一覧</h3>
+              </div>
+
+              <div class="box-body">
+                <a class="btn btn-primary" style="width: 200px;" href="/page/user/add/">新規登録</a>
+                <a class="btn btn-primary" style="width: 200px;" href="/page/user/">一覧</a>
+
+                <div class="row">
+                  <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th nowrap>ID</th>
+                          <th nowrap>氏</th>
+                          <th nowrap>名</th>
+                          <th nowrap>ユーザーID</th>
+                          <th nowrap>管理者権限</th>
+                          <th nowrap>所属団体</th>
+                          <th nowrap>登録日</th>
+                          <th nowrap>登録スタッフ</th>
+                          <th nowrap>更新日</th>
+                          <th nowrap>更新スタッフ</th>
+                        </tr>
+                      </thead>
+                      <?php
+
+                        $sql = "SELECT * FROM user LIMIT " . $offset . "," . PER_PAGE;
+                        $users = array();
+                        foreach ($dbh->query($sql) as $row) {
+                          array_push($users, $row);
+                        }
+
+                        $i = 1;
+
+                      ?>
+                      <tbody>
+                        <?php foreach ($users as $user) : ?>
+                          <tr class="odd gradeX">
+                            <td nowrap><?php echo $i++; ?></td>
+                            <td nowrap><?php echo $user['name_1']; ?></td>
+                            <td nowrap><?php echo $user['name_2']; ?></td>
+                            <td nowrap><?php echo $user['user_id']; ?></td>
+                            <td nowrap>
+                              <?php if ($user['admin'] == 1) : ?>
+                                なし
+                              <?php else: ?>
+                                あり
+                              <?php endif; ?>
+                            </td>
+                            <td nowrap><?php echo $user['party']; ?></td>
+                            <td nowrap><?php echo $user['created']; ?></td>
+                            <td nowrap><?php echo $user['created_staff']; ?></td>
+                            <td nowrap><?php echo $user['modified']; ?></td>
+                            <td nowrap><?php echo $user['modified_staff']; ?></td>
+                          </tr>
+                        <?php endforeach; ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           <?php endif; ?>
 
+
+
           <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">基本情報</h3>
+              <h3 class="box-title">団体一覧</h3>
             </div>
 
             <div class="box-body">
-              <form action="" method="post">
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-xs-3">氏名</div>
-                    <div class="col-xs-3">
-                      <input type="text" class="form-control" name="name_1" placeholder="氏" value="<?php echo h($name_1); ?>">
-                    </div>
-                    <div class="col-xs-3">
-                      <input type="text" class="form-control" name="name_2" placeholder="名" value="<?php echo h($name_2); ?>">
-                    </div>
-                    <div class="col-xs-3"></div>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-xs-3">ユーザーID</div>
-                    <div class="col-xs-9">
-                      <input type="text" class="form-control" name="user_id" placeholder="ユーザーID" value="<?php echo h($user_id); ?>">
-                    </div>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-xs-3">パスワード</div>
-                    <div class="col-xs-9">
-                      <input type="password" class="form-control" name="password" placeholder="パスワード" value="">
-                    </div>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-xs-3">管理者権限</div>
-                    <div class="col-xs-9">
-                      <select class="form-control" name="admin">
-                        <option value="">選択してください。</option>
-                        <option value="1">なし</option>
-                        <option value="2">あり</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-xs-3">所属事業所</div>
-                    <div class="col-xs-9">
-                      <input type="text" class="form-control" name="party" placeholder="所属事業所" value="<?php echo h($party); ?>">
-                    </div>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="form-group">
-                    <div class="col-xs-4">
-                      <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
-                    </div>
-                    <div class="col-xs-4">
-                      <input type="submit" class="btn btn-primary" value="上記の内容で登録する">
-                    </div>
-                    <div class="col-xs-4"></div>
-                  </div>
-                </div>
-              </form>
+
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">よくある質問一覧</h3>
+            </div>
+
+            <div class="box-body">
+
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">お問い合わせ一覧</h3>
+            </div>
+
+            <div class="box-body">
+
             </div>
           </div>
         </section>

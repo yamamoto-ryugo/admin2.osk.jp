@@ -5,14 +5,17 @@
 
       <?php if ($me['admin'] == 2) : ?>
         <li><a href="">ユーザー設定</a></li>
-      <?php endif; ?>
 
+      <?php endif; ?>
 
       <li><a href="">プロフィール設定</a></li>
       <li><a href="">団体設定</a></li>
-      <li><a href="">よくある質問設定</a></li>
-      <li><a href="">お問い合わせ一覧</a></li>
-      <li><a href="">システム設定</a></li>
+
+      <?php if ($me['admin'] == 2) : ?>
+        <li><a href="">よくある質問設定</a></li>
+        <li><a href="">お問い合わせ一覧</a></li>
+        <li><a href="">システム設定</a></li>
+      <?php endif; ?>
     </ul>
   </section>
 </aside>
