@@ -38,6 +38,7 @@
     $password = $_POST['password'];
     $admin = (int) $_POST['admin'];
     $party = $_POST['party'];
+    $created_staff = $_POST['created_staff'];
 
     $err = array();
 
@@ -73,9 +74,9 @@
       // 登録処理
 
       $sql = "INSERT INTO user
-             (name_1, name_2, user_id, password, admin, party, created)
+             (name_1, name_2, user_id, password, admin, party, created, created_staff)
              VALUES
-             (:name_1, :name_2, :user_id, :password, :admin, :party, now())";
+             (:name_1, :name_2, :user_id, :password, :admin, :party, now(), :created_staff)";
       $stmt = $dbh->prepare($sql);
       $params = array(
         ":name_1" => $name_1,
@@ -83,7 +84,8 @@
         ":user_id" => $user_id,
         ":password" => getSha1Password($password),
         ":admin" => $admin,
-        ":party" => $party
+        ":party" => $party,
+        ":created_staff" => $created_staff
       );
       $stmt->execute($params);
       header("Location: ../");
@@ -205,6 +207,7 @@
                 <div class="row">
                   <div class="form-group">
                     <div class="col-xs-4">
+                      <input type="hidden" name="created_staff" value="<?php echo h($me['name_1'] . " " . $me['name_2']); ?>">
                       <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
                     </div>
                     <div class="col-xs-4">
