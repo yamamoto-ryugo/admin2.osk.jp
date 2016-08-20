@@ -10,7 +10,7 @@
 
       <?php endif; ?>
 
-      <li><a href="">プロフィール設定</a></li>
+      <li><a href="/page/profile/">プロフィール設定</a></li>
       <li><a href="">団体設定</a></li>
 
       <?php if ($me['admin'] == 2) : ?>
