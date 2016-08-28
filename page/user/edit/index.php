@@ -35,6 +35,7 @@
     $name_1 = $_POST['name_1'];
     $name_2 = $_POST['name_2'];
     $user_id = $_POST['user_id'];
+    $mail = $_POST['mail'];
     $admin = (int) $_POST['admin'];
     $party = $_POST['party'];
     $modified_staff = $_POST['modified_staff'];
@@ -62,15 +63,16 @@
     if (empty($err)) {
       // 登録処理
 
-      $sql = "UPDATE user SET name_1 = ?, name_2 = ?, user_id = ?, admin = ?, party = ?, modified_staff = ?, modified = now() WHERE id = ?";
+      $sql = "UPDATE user SET name_1 = ?, name_2 = ?, user_id = ?, mail = ?, admin = ?, party = ?, modified_staff = ?, modified = now() WHERE id = ?";
       $stmt = $dbh->prepare($sql);
       $stmt->bindValue(1, $name_1, PDO::PARAM_STR);
       $stmt->bindValue(2, $name_2, PDO::PARAM_STR);
       $stmt->bindValue(3, $user_id, PDO::PARAM_STR);
-      $stmt->bindValue(4, $admin, PDO::PARAM_INT);
-      $stmt->bindValue(5, $party, PDO::PARAM_STR);
-      $stmt->bindValue(6, $modified_staff, PDO::PARAM_STR);
-      $stmt->bindValue(7, $id, PDO::PARAM_INT);
+      $stmt->bindValue(4, $mail, PDO::PARAM_STR);
+      $stmt->bindValue(5, $admin, PDO::PARAM_INT);
+      $stmt->bindValue(6, $party, PDO::PARAM_STR);
+      $stmt->bindValue(7, $modified_staff, PDO::PARAM_STR);
+      $stmt->bindValue(8, $id, PDO::PARAM_INT);
 
       $stmt->execute();
 
@@ -157,6 +159,15 @@
                     <div class="col-xs-3">ユーザーID</div>
                     <div class="col-xs-9">
                       <input type="text" class="form-control" name="user_id" placeholder="ユーザーID" value="<?php echo h($result['user_id']); ?>">
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="form-group">
+                    <div class="col-xs-3">メールアドレス</div>
+                    <div class="col-xs-9">
+                      <input type="text" class="form-control" name="mail" placeholder="" value="<?php echo h($result['mail']); ?>">
                     </div>
                   </div>
                 </div>

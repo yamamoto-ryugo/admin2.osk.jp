@@ -36,6 +36,7 @@
     $name_2 = $_POST['name_2'];
     $user_id = $_POST['user_id'];
     $password = $_POST['password'];
+    $mail = $_POST['mail'];
     $admin = (int) $_POST['admin'];
     $party = $_POST['party'];
     $created_staff = $_POST['created_staff'];
@@ -74,15 +75,16 @@
       // 登録処理
 
       $sql = "INSERT INTO user
-             (name_1, name_2, user_id, password, admin, party, created, created_staff)
+             (name_1, name_2, user_id, password, mail, admin, party, created, created_staff)
              VALUES
-             (:name_1, :name_2, :user_id, :password, :admin, :party, now(), :created_staff)";
+             (:name_1, :name_2, :user_id, :password, :mail, :admin, :party, now(), :created_staff)";
       $stmt = $dbh->prepare($sql);
       $params = array(
         ":name_1" => $name_1,
         ":name_2" => $name_2,
         ":user_id" => $user_id,
         ":password" => getSha1Password($password),
+        ":mail" => $mail,
         ":admin" => $admin,
         ":party" => $party,
         ":created_staff" => $created_staff
@@ -178,6 +180,15 @@
                     <div class="col-xs-3">パスワード</div>
                     <div class="col-xs-9">
                       <input type="password" class="form-control" name="password" placeholder="パスワード" value="">
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="form-group">
+                    <div class="col-xs-3">メールアドレス</div>
+                    <div class="col-xs-9">
+                      <input type="mail" class="form-control" name="mail" placeholder="メールアドレス" value="">
                     </div>
                   </div>
                 </div>

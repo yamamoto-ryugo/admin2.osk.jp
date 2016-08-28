@@ -36,6 +36,17 @@
 
         <section class="content">
 
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">お知らせ一覧</h3>
+            </div>
+
+            <div class="box-body">
+
+            </div>
+          </div>
+
+
           <?php if ($me[admin] == 2) : ?>
             <div class="box">
               <div class="box-header with-border">
@@ -111,7 +122,62 @@
             </div>
 
             <div class="box-body">
+              <a class="btn btn-primary" style="width: 200px;" href="/page/party/add/">新規登録</a>
+              <a class="btn btn-primary" style="width: 200px;" href="/page/party/">一覧</a>
+              <hr>
+              <div class="row">
+                <div class="table-responsive">
+                  <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th nowrap>NO</th>
+                        <th nowrap>事業所番号</th>
+                        <th nowrap>事業所名</th>
+                        <th nowrap>郵便番号</th>
+                        <th nowrap>住所</th>
+                        <th nowrap>電話番号</th>
+                        <th nowrap>併設サービス</th>
+                        <th nowrap>支援の特徴</th>
+                        <th nowrap>URL</th>
+                        <th nowrap>登録日</th>
+                        <th nowrap>登録スタッフ</th>
+                        <th nowrap>更新日</th>
+                        <th nowrap>更新スタッフ</th>
+                      </tr>
+                    </thead>
+                    <?php
 
+                      $sql = "SELECT * FROM party ORDER BY id DESC LIMIT 5";
+                      $partys = array();
+                      foreach ($dbh->query($sql) as $row) {
+                        array_push($partys, $row);
+                      }
+
+                      $i = 1;
+
+                    ?>
+                    <tbody>
+                      <?php foreach ($partys as $party) : ?>
+                        <tr class="odd gradeX">
+                          <td nowrap><?php echo $i++; ?></td>
+                          <td nowrap><?php echo $party['party_id']; ?></td>
+                          <td nowrap><?php echo $party['party_name']; ?></td>
+                          <td nowrap><?php echo $party['zip31'] . "-" . $party['zip32']; ?></td>
+                          <td nowrap><?php echo $party['pref31'] . $party['addr31'] . $party['address']; ?></td>
+                          <td nowrap><a href="tel:<?php echo $party['tell_1'] . $party['tell_2'] . $party['tell_3']; ?>"><?php echo $party['tell_1'] . "-" . $party['tell_2'] . "-" . $party['tell_3']; ?></a></td>
+                          <td nowrap><?php echo nl2br($party['service']); ?></td>
+                          <td nowrap><?php echo nl2br($party['special']); ?></td>
+                          <td nowrap><a href="<?php echo $party['url']; ?>" target="_blank"><?php echo $party['url']; ?></a></td>
+                          <td nowrap><?php echo $party['created']; ?></td>
+                          <td nowrap><?php echo $party['created_staff']; ?></td>
+                          <td nowrap><?php echo $party['modified']; ?></td>
+                          <td nowrap><?php echo $party['modified_staff']; ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -11,13 +11,15 @@
       <?php endif; ?>
 
       <li><a href="/page/profile/">プロフィール設定</a></li>
-      <li><a href="">団体設定</a></li>
+      <li><a href="/page/party/">団体設定</a></li>
 
       <?php if ($me['admin'] == 2) : ?>
         <li><a href="">よくある質問設定</a></li>
         <li><a href="">お問い合わせ一覧</a></li>
         <li><a href="">システム設定</a></li>
+        <li><a href="">お知らせ設定</a></li>
       <?php endif; ?>
+      <li><a href="/page/logout/">ログアウト</a></li>
     </ul>
   </section>
 </aside>

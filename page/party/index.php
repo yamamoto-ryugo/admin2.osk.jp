@@ -13,11 +13,6 @@
 
   $me = $_SESSION['me'];
 
-  if ($me['admin'] == 1) {
-    header('Location: ../../');
-    exit;
-  }
-
   define('PER_PAGE', 5);
 
   if (empty($_GET['page'])) {
@@ -43,22 +38,22 @@
 
       <div class="content-wrapper">
         <section class="content-header">
-          <h1>ユーザー設定</h1>
+          <h1>団体設定</h1>
           <ol class="breadcrumb">
             <li><a href="/">TOP</a></li>
-            <li>ユーザー設定</li>
+            <li>団体設定</li>
           </ol>
         </section>
 
         <section class="content">
 
-          <a class="btn btn-primary" style="width: 200px;" href="/page/user/add/">新規登録</a>
+          <a class="btn btn-primary" style="width: 200px;" href="/page/party/add/">新規登録</a>
 
           <hr>
 
             <div class="box">
               <div class="box-header with-border">
-                <h3 class="box-title">ユーザー一覧</h3>
+                <h3 class="box-title">団体一覧</h3>
               </div>
 
               <div class="box-body">
@@ -70,12 +65,14 @@
                         <tr>
                           <th nowrap>処理</th>
                           <th nowrap>ID</th>
-                          <th nowrap>氏</th>
-                          <th nowrap>名</th>
-                          <th nowrap>ユーザーID</th>
-                          <th nowrap>メールアドレス</th>
-                          <th nowrap>管理者権限</th>
-                          <th nowrap>所属団体</th>
+                          <th nowrap>事業所番号</th>
+                          <th nowrap>事業所名</th>
+                          <th nowrap>郵便番号</th>
+                          <th nowrap>住所</th>
+                          <th nowrap>電話番号</th>
+                          <th nowrap>併設サービス</th>
+                          <th nowrap>支援の特徴</th>
+                          <th nowrap>URL</th>
                           <th nowrap>登録日</th>
                           <th nowrap>登録スタッフ</th>
                           <th nowrap>更新日</th>
@@ -84,42 +81,40 @@
                       </thead>
                       <?php
 
-                        $sql = "SELECT * FROM user LIMIT " . $offset . "," . PER_PAGE;
-                        $users = array();
+                        $sql = "SELECT * FROM party LIMIT " . $offset . "," . PER_PAGE;
+                        $partys = array();
                         foreach ($dbh->query($sql) as $row) {
-                          array_push($users, $row);
+                          array_push($partys, $row);
                         }
 
-                        $total = $dbh->query("SELECT COUNT(*) FROM user")->fetchColumn();
+                        $total = $dbh->query("SELECT COUNT(*) FROM party")->fetchColumn();
                         $totalPage = ceil($total / PER_PAGE);
 
                         $i = 1;
 
                       ?>
                       <tbody>
-                        <?php foreach ($users as $user) : ?>
+                        <?php foreach ($partys as $party) : ?>
                           <tr class="odd gradeX">
                             <td nowrap>
-                              <a href="edit/?id=<?php echo $user['id']; ?>" class="btn btn-default"><i class="fa fa-cog"></i></a>
-                              <a href="delete/?id=<?php echo $user['id']; ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                            </td>
-                            <td nowrap><?php echo $i++; ?></td>
-                            <td nowrap><?php echo $user['name_1']; ?></td>
-                            <td nowrap><?php echo $user['name_2']; ?></td>
-                            <td nowrap><?php echo $user['user_id']; ?></td>
-                            <td nowrap><?php echo $user['mail']; ?></td>
-                            <td nowrap>
-                              <?php if ($user['admin'] == 1) : ?>
-                                なし
-                              <?php else: ?>
-                                あり
+                              <a href="edit/?id=<?php echo $party['id']; ?>" class="btn btn-default"><i class="fa fa-cog"></i></a>
+                              <?php if ($me['admin'] == 2) : ?>
+                                <a href="delete/?id=<?php echo $party['id']; ?>" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                               <?php endif; ?>
                             </td>
-                            <td nowrap><?php echo $user['party']; ?></td>
-                            <td nowrap><?php echo $user['created']; ?></td>
-                            <td nowrap><?php echo $user['created_staff']; ?></td>
-                            <td nowrap><?php echo $user['modified']; ?></td>
-                            <td nowrap><?php echo $user['modified_staff']; ?></td>
+                            <td nowrap><?php echo $i++; ?></td>
+                            <td nowrap><?php echo $party['party_id']; ?></td>
+                            <td nowrap><?php echo $party['party_name']; ?></td>
+                            <td nowrap><?php echo $party['zip31'] . "-" . $party['zip32']; ?></td>
+                            <td nowrap><?php echo $party['pref31'] . $party['addr31'] . $party['address']; ?></td>
+                            <td nowrap><a href="tel:<?php echo $party['tell_1'] . $party['tell_2'] . $party['tell_3']; ?>"><?php echo $party['tell_1'] . "-" . $party['tell_2'] . "-" . $party['tell_3']; ?></a></td>
+                            <td nowrap><?php echo nl2br($party['service']); ?></td>
+                            <td nowrap><?php echo nl2br($party['special']); ?></td>
+                            <td nowrap><a href="<?php echo $party['url']; ?>" target="_blank"><?php echo $party['url']; ?></a></td>
+                            <td nowrap><?php echo $party['created']; ?></td>
+                            <td nowrap><?php echo $party['created_staff']; ?></td>
+                            <td nowrap><?php echo $party['modified']; ?></td>
+                            <td nowrap><?php echo $party['modified_staff']; ?></td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>
