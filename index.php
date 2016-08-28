@@ -187,17 +187,50 @@
             </div>
 
             <div class="box-body">
+              <a class="btn btn-primary" style="width: 200px;" href="/page/faq/add/">新規登録</a>
+              <a class="btn btn-primary" style="width: 200px;" href="/page/faq/">一覧</a>
+              <hr>
+              <div class="row">
+                <div class="table-responsive">
+                  <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th nowrap>ID</th>
+                        <th nowrap>質問</th>
+                        <th nowrap>回答</th>
+                        <th nowrap>登録日</th>
+                        <th nowrap>登録スタッフ</th>
+                        <th nowrap>更新日</th>
+                        <th nowrap>更新スタッフ</th>
+                      </tr>
+                    </thead>
+                    <?php
 
-            </div>
-          </div>
+                      $sql = "SELECT * FROM faq ORDER BY id DESC LIMIT 5";
+                      $faqs = array();
+                      foreach ($dbh->query($sql) as $row) {
+                        array_push($faqs, $row);
+                      }
 
-          <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">お問い合わせ一覧</h3>
-            </div>
+                      $i = 1;
 
-            <div class="box-body">
-
+                    ?>
+                    <tbody>
+                      <?php foreach ($faqs as $faq) : ?>
+                        <tr class="odd gradeX">
+                          <td nowrap><?php echo $i++; ?></td>
+                          <td nowrap><?php echo nl2br($faq['question']); ?></td>
+                          <td nowrap><?php echo nl2br($faq['answer']); ?></td>
+                          <td nowrap><?php echo $faq['created']; ?></td>
+                          <td nowrap><?php echo $faq['created_staff']; ?></td>
+                          <td nowrap><?php echo $faq['modified']; ?></td>
+                          <td nowrap><?php echo $faq['modified_staff']; ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </section>
