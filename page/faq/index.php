@@ -102,10 +102,32 @@
                             <td nowrap><?php echo $i++; ?></td>
                             <td nowrap><?php echo nl2br($faq['question']); ?></td>
                             <td nowrap><?php echo nl2br($faq['answer']); ?></td>
-                            <td nowrap><?php echo $faq['created']; ?></td>
+                            <td nowrap>
+                              <?php
+                                $created = $faq['created'];
+                                echo date('Y/m/d H:i', strtotime($created));
+                              ?>
+                            </td>
                             <td nowrap><?php echo $faq['created_staff']; ?></td>
-                            <td nowrap><?php echo $faq['modified']; ?></td>
-                            <td nowrap><?php echo $faq['modified_staff']; ?></td>
+                            <td nowrap>
+                              <?php
+                                if ($faq['modified'] == 0) {
+                                  echo "-";
+                                } else {
+                                  $modified = $faq['modified'];
+                                  echo date('Y/m/d H:i', strtotime($modified));
+                                }
+                              ?>
+                            </td>
+                            <td nowrap>
+                              <?php
+                                if (empty($faq['modified_staff'])) {
+                                  echo "-";
+                                } else {
+                                  echo $faq['modified_staff'];
+                                }
+                              ?>
+                            </td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>

@@ -116,10 +116,37 @@
                               <?php endif; ?>
                             </td>
                             <td nowrap><?php echo $user['party']; ?></td>
-                            <td nowrap><?php echo $user['created']; ?></td>
-                            <td nowrap><?php echo $user['created_staff']; ?></td>
-                            <td nowrap><?php echo $user['modified']; ?></td>
-                            <td nowrap><?php echo $user['modified_staff']; ?></td>
+                            <td nowrap>
+                              <?php
+
+                                $created = $user['created'];
+
+                                echo date('Y/m/d H:i', strtotime($created));
+
+                              ?>
+                            </td>
+                            <td nowrap>
+                              <?php echo $user['created_staff']; ?>
+                            </td>
+                            <td nowrap>
+                              <?php
+                                if ($user['modified'] == 0) {
+                                  echo "-";
+                                } else {
+                                  $modified = $user['modified'];
+                                  echo date('Y/m/d H:i', strtotime($modified));
+                                }
+                              ?>
+                            </td>
+                            <td nowrap>
+                              <?php
+                                if (empty($user['modified_staff'])) {
+                                  echo "-";
+                                } else {
+                                  echo $user['modified_staff'];
+                                }
+                              ?>
+                            </td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>

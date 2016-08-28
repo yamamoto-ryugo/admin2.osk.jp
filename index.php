@@ -42,6 +42,71 @@
             </div>
 
             <div class="box-body">
+              <?php if ($me['admin'] == 2) : ?>
+                <a class="btn btn-primary" style="width: 200px;" href="/page/news/add/">新規登録</a>
+              <?php endif; ?>
+              <a class="btn btn-primary" style="width: 200px;" href="/page/news/">一覧</a>
+
+              <hr>
+
+              <ul class="products-list product-list-in-box">
+
+                <?php
+
+                  $sql = "SELECT * FROM news ORDER BY id DESC LIMIT 5";
+                  $news = array();
+                  foreach ($dbh->query($sql) as $row) {
+                    array_push($news, $row);
+                  }
+
+                  $i = 1;
+
+                ?>
+
+                <?php foreach ($news as $new) : ?>
+                  <li class="item">
+                    <div class="product-img">
+                      <img src="/dist/img/default-50x50.gif">
+                    </div>
+
+                    <div class="product-info">
+                      <a href="" class="product-title">
+                        <?php echo $new['title']; ?>
+                      </a>
+                      <div class="product-description">
+                        <?php echo nl2br($new['news']); ?><br /><br />
+                        記事登録者：<?php echo $new['created_staff'] ?><br />
+                        記事登録日：
+                        <?php
+                          $created = $new['created'];
+
+                          echo date('Y/m/d H:i', strtotime($created));
+                        ?>
+                        <br />
+                        <?php
+                          if (!empty($news[modified_staff])) {
+                            echo "最終更新者：";
+                            echo $new['modified_staff'];
+                            echo "<br />";
+                            echo "最終更新日：";
+                            $modified = $new['modified'];
+                            echo date('Y/m/d H:i', strtotime($modified));
+                          }
+                        ?>
+                      </div>
+                    </div>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">バージョン情報</h3>
+            </div>
+
+            <div class="box-body">
 
             </div>
           </div>
@@ -100,10 +165,32 @@
                               <?php endif; ?>
                             </td>
                             <td nowrap><?php echo $user['party']; ?></td>
-                            <td nowrap><?php echo $user['created']; ?></td>
+                            <td nowrap>
+                              <?php
+                                $created = $user['created'];
+                                echo date('Y/m/d H:i', strtotime($created));
+                              ?>
+                            </td>
                             <td nowrap><?php echo $user['created_staff']; ?></td>
-                            <td nowrap><?php echo $user['modified']; ?></td>
-                            <td nowrap><?php echo $user['modified_staff']; ?></td>
+                            <td nowrap>
+                              <?php
+                                if ($user['modified'] == 0) {
+                                  echo "-";
+                                } else {
+                                  $modified = $user['modified'];
+                                  echo date('Y/m/d H:i', strtotime($modified));
+                                }
+                              ?>
+                            </td>
+                            <td nowrap>
+                              <?php
+                                if (empty($user['modified_staff'])) {
+                                  echo "-";
+                                } else {
+                                  echo $user['modified_staff'];
+                                }
+                              ?>
+                            </td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>
@@ -168,10 +255,32 @@
                           <td nowrap><?php echo nl2br($party['service']); ?></td>
                           <td nowrap><?php echo nl2br($party['special']); ?></td>
                           <td nowrap><a href="<?php echo $party['url']; ?>" target="_blank"><?php echo $party['url']; ?></a></td>
-                          <td nowrap><?php echo $party['created']; ?></td>
+                          <td nowrap>
+                            <?php
+                              $created = $party['created'];
+                              echo date('Y/m/d H:i', strtotime($created));
+                            ?>
+                          </td>
                           <td nowrap><?php echo $party['created_staff']; ?></td>
-                          <td nowrap><?php echo $party['modified']; ?></td>
-                          <td nowrap><?php echo $party['modified_staff']; ?></td>
+                          <td nowrap>
+                            <?php
+                              if ($party['modified'] == 0) {
+                                echo "-";
+                              } else {
+                                $modified = $party['modified'];
+                                echo date('Y/m/d H:i', strtotime($modified));
+                              }
+                            ?>
+                          </td>
+                          <td nowrap>
+                            <?php
+                              if (empty($party['modified_staff'])) {
+                                echo "-";
+                              } else {
+                                echo $party['modified_staff'];
+                              }
+                            ?>
+                          </td>
                         </tr>
                       <?php endforeach; ?>
                     </tbody>
@@ -221,10 +330,32 @@
                           <td nowrap><?php echo $i++; ?></td>
                           <td nowrap><?php echo nl2br($faq['question']); ?></td>
                           <td nowrap><?php echo nl2br($faq['answer']); ?></td>
-                          <td nowrap><?php echo $faq['created']; ?></td>
+                          <td nowrap>
+                            <?php
+                              $created = $faq['created'];
+                              echo date('Y/m/d H:i', strtotime($created));
+                            ?>
+                          </td>
                           <td nowrap><?php echo $faq['created_staff']; ?></td>
-                          <td nowrap><?php echo $faq['modified']; ?></td>
-                          <td nowrap><?php echo $faq['modified_staff']; ?></td>
+                          <td nowrap>
+                            <?php
+                              if ($faq['modified'] == 0) {
+                                echo "-";
+                              } else {
+                                $modified = $faq['modified'];
+                                echo date('Y/m/d H:i', strtotime($modified));
+                              }
+                            ?>
+                          </td>
+                          <td nowrap>
+                            <?php
+                              if (empty($faq['modified_staff'])) {
+                                echo "-";
+                              } else {
+                                echo $faq['modified_staff'];
+                              }
+                            ?>
+                          </td>
                         </tr>
                       <?php endforeach; ?>
                     </tbody>

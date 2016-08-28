@@ -111,10 +111,32 @@
                             <td nowrap><?php echo nl2br($party['service']); ?></td>
                             <td nowrap><?php echo nl2br($party['special']); ?></td>
                             <td nowrap><a href="<?php echo $party['url']; ?>" target="_blank"><?php echo $party['url']; ?></a></td>
-                            <td nowrap><?php echo $party['created']; ?></td>
+                            <td nowrap>
+                              <?php
+                                $created = $party['created'];
+                                echo date('Y/m/d H:i', strtotime($created));
+                              ?>
+                            </td>
                             <td nowrap><?php echo $party['created_staff']; ?></td>
-                            <td nowrap><?php echo $party['modified']; ?></td>
-                            <td nowrap><?php echo $party['modified_staff']; ?></td>
+                            <td nowrap>
+                              <?php
+                                if ($party['modified'] == 0) {
+                                  echo "-";
+                                } else {
+                                  $modified = $party['modified'];
+                                  echo date('Y/m/d H:i', strtotime($modified));
+                                }
+                              ?>
+                            </td>
+                            <td nowrap>
+                              <?php
+                                if (empty($party['modified_staff'])) {
+                                  echo "-";
+                                } else {
+                                  echo $party['modified_staff'];
+                                }
+                              ?>
+                            </td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>
